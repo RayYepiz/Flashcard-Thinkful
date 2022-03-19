@@ -2,7 +2,9 @@ import React, {useState, useEffect} from "react";
 import {useHistory, useLocation} from "react-router-dom";
 import { createDeck, updateDeck, listDecks } from "../../utils/api/index";
 
-function DeckForm({deck}) {
+//lifting state from EditDeck
+
+function DeckForm({deck}, {setDeck}) {
   
   const history = useHistory();
   const {pathname} = useLocation();
@@ -14,7 +16,7 @@ function DeckForm({deck}) {
   useEffect(() => {
     function addOrEdit() {
       if (pathname.includes("edit")) {
-        setName({"name": deck.name});
+        setName({"name": deck.name}); //updating name and description with state from editdeck
         setDescription({"description": deck.description});
       } else {
         setIsEdit(false);
@@ -23,12 +25,11 @@ function DeckForm({deck}) {
     addOrEdit();
   }, [deck, pathname])
 
-  function handleName(event) {
-    setName({...name, "name": event.target.value});
-  }
-
-  function handleDescription(event) {
-    setDescription({...description, "description": event.target.value});
+  const handleChange = ({target})=>{ //handleChange for name & description
+    setDeck({
+      ...deck,
+      [target.id]:target.value 
+    })
   }
  
   async function handleCreate() {
@@ -48,14 +49,30 @@ function DeckForm({deck}) {
       <form>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
-          <input type="text" className="form-control" id="name" value={name.name || ''} placeholder={isEdit ? null : "Deck Name"} onChange={handleName} />
+          <input 
+          type="text" 
+          className="form-control" 
+          id="name" 
+          value={name.name || ''} 
+          placeholder={isEdit ? null : "Deck Name"} 
+          onChange={handleChange} />
         </div>
         <div className="form-group">
           <label htmlFor="description">Description:</label>
-          <textarea className="form-control" id="description" rows="3" value={description.description || ''} placeholder={isEdit ? null : "Brief Description of Deck"} onChange={handleDescription}> </textarea>
+          <textarea 
+          className="form-control" 
+          id="description" 
+          rows="3" 
+          value={description.description || ''} 
+          placeholder={isEdit ? null : "Brief Description of Deck"} 
+          onChange={handleChange}> 
+          </textarea>
         </div>
         
-        <button type="button" className="btn btn-secondary mr-1" onClick={() => history.push(isEdit ? `/decks/${deck.id}` : "/")}>Cancel</button>
+        <button 
+        type="button" 
+        className="btn btn-secondary mr-1" 
+        onClick={() => history.push(isEdit ? `/decks/${deck.id}` : "/")}>Cancel</button>
        
         <button 
           type="button"

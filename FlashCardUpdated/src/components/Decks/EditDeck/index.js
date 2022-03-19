@@ -22,7 +22,7 @@ function EditDeck() {
     <>
     <Breadcrumb deck={deck}/>
     <h1>Edit Deck</h1>
-    <DeckForm deck={deck} />
+    <DeckForm deck={deck} setDeck={setDeck} />
     </>
   )
 }
