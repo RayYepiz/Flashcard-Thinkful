@@ -52,7 +52,7 @@ function View() {
       <div className="container">
         <h1>Cards</h1>
       </div>
-      <DisplayCards deck={deck}/>//state is being lifted here...
+      <DisplayCards deck={deck}/>
     </>
   )
   
